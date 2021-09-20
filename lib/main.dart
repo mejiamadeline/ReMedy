@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:remedy/home_page.dart';
+import 'package:remedy/login_page.dart';
+import 'package:remedy/medication_details_page.dart';
+import 'package:remedy/medication_page.dart';
+import 'package:remedy/sign_up_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: MyHomePage(title: 'ReMedy'),
+      home: MedicationDetailsPage(title: 'ReMedy'),
     );
   }
 }
