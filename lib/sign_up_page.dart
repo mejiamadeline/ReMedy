@@ -10,43 +10,85 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Sign Up Page',
+              'Sign Up',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Name',
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Email',
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Password',
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Confirm Password',
+                ),
+              ),
             ),
             Text(
-              'Name: ',
+              '',
+            ),
+            OutlinedButton(
+                onPressed: (){
+                  print('Logged in');
+                },
+                style: ButtonStyle(
+                ),
+                child: const Text('Sign Up')
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              '',
+            ),
+            Text(
+              'Already have an account? Login!',
+              textAlign: TextAlign.right,
             ),
           ],
         ),
+
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

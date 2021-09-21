@@ -10,43 +10,81 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Login Page',
+              'Welcome to ReMedy!',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
             ),
             Text(
-              'Login first',
+              'Login',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Email',
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Password',
+                ),
+              ),
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              '',
+            ),
+            Text(
+              'Forgot Password?',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: Colors.redAccent
+              ),
+            ),
+            Text(
+              '',
+            ),
+             OutlinedButton(
+              onPressed: (){
+                print('Logged in');
+              },
+                 style: ButtonStyle(
+                 ),
+               child: const Text('Log In')
+            ),
+            Text(
+              '',
+            ),
+            Text(
+              "Don't have an account? Sign Up!",
+              textAlign: TextAlign.right,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -10,43 +10,39 @@ class AppointmentDetailsPage extends StatefulWidget {
 }
 
 class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final items = List<String>.generate(6, (i) => "info");
+  /*List<String> details = [
+    details(choice: date),
+    details(choice: time),
+    details(choice: location),
+    details(choice: alarm),
+    details(choice: notification),
+    details(choice: color),
+  ];*/
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Appointments'),
+        centerTitle: true,
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.redAccent),
+            onPressed: () {},
+            child: const Text('Save'),
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Appointment Details Page',
-            ),
-            Text(
-              'Date: ',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(items[index]),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

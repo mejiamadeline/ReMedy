@@ -10,42 +10,37 @@ class ReminderDetailsPage extends StatefulWidget {
 }
 
 class _ReminderDetailsPageState extends State<ReminderDetailsPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final items = List<String>.generate(5, (i) => "info");
+  /*List<String> details = [
+    details(choice: type),
+    details(choice: medication),
+    details(choice: alarm),
+    details(choice: notification),
+    details(choice: color),
+  ];*/
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Reminders'),
+        centerTitle: true,
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.redAccent),
+            onPressed: () {},
+            child: const Text('Save'),
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Reminder Details Page',
-            ),
-            Text(
-              'Type of Reminder:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(items[index]),
+          );
+        },
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

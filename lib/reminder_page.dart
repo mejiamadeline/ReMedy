@@ -10,43 +10,39 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final items = List<String>.generate(10000, (i) => "Item $i");
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Reminders'),
+        centerTitle: true,
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.redAccent),
+            onPressed: () {},
+            child: const Text('Edit'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.redAccent),
+            onPressed: () {},
+            child: const Text('Delete'),
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Reminder Page',
-            ),
-            Text(
-              'Reminders are...',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(items[index]),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {},
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

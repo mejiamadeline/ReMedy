@@ -10,42 +10,39 @@ class MedicationDetailsPage extends StatefulWidget {
 }
 
 class _MedicationDetailsPageState extends State<MedicationDetailsPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final items = List<String>.generate(7, (i) => "info");
+  /*List<String> details = [
+    details(choice: dose),
+    details(choice: frequency),
+    details(choice: name),
+    details(choice: strength),
+    details(choice: amount),
+    details(choice: datedespensed),
+    details(choice: expirationdate),
+  ];*/
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Medications'),
+        centerTitle: true,
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.redAccent),
+            onPressed: () {},
+            child: const Text('Save'),
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Medication Details Page',
-            ),
-            Text(
-              'Medication Specifications are...',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(items[index]),
+          );
+        },
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
