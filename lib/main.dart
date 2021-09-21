@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:remedy/appointment_details_page.dart';
+import 'package:remedy/appointment_page.dart';
+import 'package:remedy/calendar_page.dart';
 import 'package:remedy/home_page.dart';
 import 'package:remedy/login_page.dart';
 import 'package:remedy/medication_details_page.dart';
 import 'package:remedy/medication_page.dart';
+import 'package:remedy/reminder_details_page.dart';
+import 'package:remedy/reminder_page.dart';
 import 'package:remedy/sign_up_page.dart';
 
 void main() {
@@ -27,7 +32,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.deepPurple,
       ),
-      home: MedicationDetailsPage(title: 'ReMedy'),
+      home: AppointmentDetailsPage(title: 'ReMedy'),
     );
   }
 }
