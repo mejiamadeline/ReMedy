@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1062376744609",
+    "project_id": "remedy-app-c142d",
+    "storage_bucket": "remedy-app-c142d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062376744609:android:935ed8d2533a04d595f2e0",
+        "android_client_info": {
+          "package_name": "com.mobileapp.remedy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062376744609-slm1fa1uldj722a457vp58qh36vqc513.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqmVa4E1pAxWl-kzPFJ9qElAhiZnZoaeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062376744609-slm1fa1uldj722a457vp58qh36vqc513.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
