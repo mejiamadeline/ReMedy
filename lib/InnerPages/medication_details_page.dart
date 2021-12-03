@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:remedy/Pages/medication_page.dart';
@@ -20,6 +21,9 @@ class _MedicationDetailsPageState extends State<MedicationDetailsPage> {
   String expirationDate = '';
   String name = '';
   String frequency = '';
+  final DatabaseReference ref =
+  FirebaseDatabase.instance.reference().child("users");
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -47,30 +51,32 @@ class _MedicationDetailsPageState extends State<MedicationDetailsPage> {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 primary: Colors.green,
-              backgroundColor: Colors.black,
+                backgroundColor: Colors.black,
               ),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
                           MedicationPage(title: 'Go'),
                     ));
+                final FirebaseUser user = await auth.currentUser();
+                final uid = user.uid;
                 var timestamp = new DateTime.now().millisecondsSinceEpoch;
                 FirebaseDatabase.instance.reference().child(
-                    "Medication/med" + timestamp.toString()).set(
-                  {
-                    "Name" : name,
-                    "Dosage": dosage,
-                    "Frequency": frequency,
-                    "Amount": amount,
-                    "Date Dispensed": dateDispensed,
-                    "Expiration Date": expirationDate
-                  }
-                ).then((value)
-                {
+                    "users/$uid/Medication/med"
+                        + timestamp.toString()).set(
+                    {
+                      "Name": name,
+                      "Dosage": dosage,
+                      "Frequency": frequency,
+                      "Amount": amount,
+                      "Date Dispensed": dateDispensed,
+                      "Expiration Date": expirationDate
+                    }
+                ).then((value) {
                   print("success");
-                }).catchError((error){
+                }).catchError((error) {
                   print("failure");
                 });
                 print('Name: ${name}');
@@ -88,7 +94,8 @@ class _MedicationDetailsPageState extends State<MedicationDetailsPage> {
     );
   }
 
-  Widget getMedName() => TextField(
+  Widget getMedName() =>
+      TextField(
         onChanged: (value) => setState(() => this.name = value),
         decoration: InputDecoration(
           labelText: 'Medication Name',
@@ -97,49 +104,55 @@ class _MedicationDetailsPageState extends State<MedicationDetailsPage> {
         ),
       );
 
-  Widget getFrequency() => TextField(
-    onChanged: (value) => setState(() => this.frequency = value),
-    decoration: InputDecoration(
-      labelText: 'Frequency',
-      hintText: 'How many times a day? week?',
-      border: OutlineInputBorder(),
-    ),
-  );
+  Widget getFrequency() =>
+      TextField(
+        onChanged: (value) => setState(() => this.frequency = value),
+        decoration: InputDecoration(
+          labelText: 'Frequency',
+          hintText: 'How many times a day? week?',
+          border: OutlineInputBorder(),
+        ),
+      );
 
-  Widget getDosage() => TextField(
-    onChanged: (value) => setState(() => this.dosage = value),
-    decoration: InputDecoration(
-      labelText: 'Dosage',
-      hintText: 'ex: 10 mg',
-      border: OutlineInputBorder(),
-    ),
-  );
+  Widget getDosage() =>
+      TextField(
+        onChanged: (value) => setState(() => this.dosage = value),
+        decoration: InputDecoration(
+          labelText: 'Dosage',
+          hintText: 'ex: 10 mg',
+          border: OutlineInputBorder(),
+        ),
+      );
 
-  Widget getAmount() => TextField(
-    onChanged: (value) => setState(() => this.amount = value),
-    decoration: InputDecoration(
-      labelText: 'Amount',
-      hintText: 'Number of Pills',
-      border: OutlineInputBorder(),
-    ),
-    keyboardType: TextInputType.number,
-  );
+  Widget getAmount() =>
+      TextField(
+        onChanged: (value) => setState(() => this.amount = value),
+        decoration: InputDecoration(
+          labelText: 'Amount',
+          hintText: 'Number of Pills',
+          border: OutlineInputBorder(),
+        ),
+        keyboardType: TextInputType.number,
+      );
 
-  Widget getDispensed() => TextField(
-    onChanged: (value) => setState(() => this.dateDispensed = value),
-    decoration: InputDecoration(
-      labelText: 'Date Dispensed',
-      hintText: 'ex: 10/02/21',
-      border: OutlineInputBorder(),
-    ),
-  );
+  Widget getDispensed() =>
+      TextField(
+        onChanged: (value) => setState(() => this.dateDispensed = value),
+        decoration: InputDecoration(
+          labelText: 'Date Dispensed',
+          hintText: 'ex: 10/02/21',
+          border: OutlineInputBorder(),
+        ),
+      );
 
-  Widget getExpiration() => TextField(
-    onChanged: (value) => setState(() => this.expirationDate = value),
-    decoration: InputDecoration(
-      labelText: 'Expiration Date',
-      hintText: 'ex: 01/16/23',
-      border: OutlineInputBorder(),
-    ),
-  );
+  Widget getExpiration() =>
+      TextField(
+        onChanged: (value) => setState(() => this.expirationDate = value),
+        decoration: InputDecoration(
+          labelText: 'Expiration Date',
+          hintText: 'ex: 01/16/23',
+          border: OutlineInputBorder(),
+        ),
+      );
 }
+

@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "1062376744609",
+    "firebase_url": "https://remedy-app-c142d-default-rtdb.firebaseio.com",
     "project_id": "remedy-app-c142d",
     "storage_bucket": "remedy-app-c142d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1062376744609:android:935ed8d2533a04d595f2e0",
+        "mobilesdk_app_id": "1:1062376744609:android:624d678c8c3da4cb95f2e0",
         "android_client_info": {
-          "package_name": "com.mobileapp.remedy"
+          "package_name": "com.mmejiaperez.remedy"
         }
       },
       "oauth_client": [

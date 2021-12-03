@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobileapp.remedy">
    <application
-        android:label="remedy"
+        android:label="ReMedy"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

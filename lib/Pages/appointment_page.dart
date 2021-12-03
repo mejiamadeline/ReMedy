@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:remedy/InnerPages/appointment_details_page.dart';
@@ -12,12 +13,22 @@ class AppointmentPage extends StatefulWidget {
 
 class _AppointmentPageState extends State<AppointmentPage> {
 
-  var appointmentDetails = [];
+  final DatabaseReference ref =
+  FirebaseDatabase.instance.reference().child("users");
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
-  _AppointmentPageState()
+
+  var appointmentDetails = [];
+  var appId = [];
+  var selected;
+
+  void setInfo() async
   {
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+
     FirebaseDatabase.instance.reference().child(
-        "Appointment"
+        "users/$uid/Appointment"
     ).once().then((datasnapshot)
     {
       print("success");
@@ -29,8 +40,10 @@ class _AppointmentPageState extends State<AppointmentPage> {
       {
         print(k);
         print(v);
+        appId.add(k);
         appsTemp.add(v);
       });
+      print(appId);
       print(appsTemp);
       appointmentDetails = appsTemp;
       setState(() {
@@ -44,36 +57,59 @@ class _AppointmentPageState extends State<AppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Appointments'),
         centerTitle: true,
         actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(primary: Colors.greenAccent),
-            onPressed: () {},
-            child: const Text('Edit'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(primary: Colors.redAccent),
-            onPressed: () {},
-            child: const Text('Delete'),
+          IconButton(
+            onPressed: (){
+              setInfo();
+            },
+            icon: Icon(Icons.refresh),
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
-        onPressed: () {Navigator.push(context, MaterialPageRoute(
-          builder: (context) => AppointmentDetailsPage(title: 'AppDetials'),
+        onPressed: ()
+        {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+          builder: (context) =>
+              AppointmentDetailsPage(title: 'AppDetials'),
         ));
         },
         child: Icon(Icons.add),
       ),
+
       body: ListView.builder(
         itemCount: appointmentDetails.length,
         itemBuilder: (BuildContext context, int index) {
           return ExpansionTile(
             title: Text(
                 '${appointmentDetails[index] ['Nickname']}'
+            ),
+            trailing: Wrap(
+              spacing: 150,
+              children: <Widget>[
+                Icon(Icons.arrow_drop_down_rounded,
+                  color: Colors.grey,
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete,
+                    color: Colors.red,),
+                  onPressed: () {
+                    print("Deleted ID is: " + appId[index]);
+                    selected = appId[index];
+                    print(selected);
+                    deletes(selected);
+                    print(selected);
+                  },
+                ),
+              ],
             ),
             children: [
               Column(
@@ -90,10 +126,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                       'Physician: ${appointmentDetails[index] ['Physician']}'
                   ),
                   Text(
-                      'Actual Time: ${appointmentDetails[index] ['Actual Time']}'
-                  ),
-                  Text(
-                      'Reminder Set for: ${appointmentDetails[index] ['Reminder Time']}'
+                      'Appointment Time: ${appointmentDetails[index] ['Actual Time']}'
                   ),
                 ],
               )
@@ -102,5 +135,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
         },
       ),
     );
+  }
+  deletes(var selected) async
+  {
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+    await FirebaseDatabase.instance.reference().child(
+        "users/$uid/Appointment").child(selected).remove();
+    selected = null;
   }
 }

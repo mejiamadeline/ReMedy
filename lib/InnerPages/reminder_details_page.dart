@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:remedy/Pages/reminder_page.dart';
-import 'package:remedy/notifications.dart';
+
 
 class ReminderDetailsPage extends StatefulWidget {
   ReminderDetailsPage({Key? key, required this.title}) : super(key: key);
@@ -12,16 +14,14 @@ class ReminderDetailsPage extends StatefulWidget {
 }
 
 class _ReminderDetailsPageState extends State<ReminderDetailsPage> {
-  /*List<String> details = [
-    details(choice: type),
-    details(choice: medication),
-    details(choice: alarm),
-    details(choice: notification),
-    details(choice: color),
-  ];*/
   String type = '';
   String repeat = '';
-  String frequency = '';
+  String date = '';
+  String time = '';
+  final DatabaseReference ref =
+  FirebaseDatabase.instance.reference().child("users");
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,9 @@ class _ReminderDetailsPageState extends State<ReminderDetailsPage> {
             children: [
               getType(),
               const SizedBox(height: 30,),
-              getFrequency(),
+              getTime(),
+              const SizedBox(height: 30,),
+              getDate(),
               const SizedBox(height: 30,),
               getRepeatiting(),
               OutlinedButton(
@@ -46,26 +48,23 @@ class _ReminderDetailsPageState extends State<ReminderDetailsPage> {
                   primary: Colors.green,
                 backgroundColor: Colors.black,
                 ),
-               onPressed: () {
-                  Notifications.scheduledNotification(
-                    title: 'Test',
-                    body: 'This is a test',
-                    payload: 'plans at 9:20 am',
-                    scheduledDate: DateTime.now().add(Duration(seconds: 3)),
-                  );
-
+               onPressed: () async{
                  Navigator.pop(
                      context,
                      MaterialPageRoute(
                        builder: (context) =>
                            ReminderPage(title: 'Go'),
                      ));
+                 final FirebaseUser user = await auth.currentUser();
+                 final uid = user.uid;
                  var timestamp = new DateTime.now().millisecondsSinceEpoch;
                  FirebaseDatabase.instance.reference().child(
-                     "Reminder/remind" + timestamp.toString()).set(
+                     "users/$uid/Reminder/remind"
+                         + timestamp.toString()).set(
                      {
                        "Type" : type,
-                       "Frequency": frequency,
+                       "Date": date,
+                       "Time": time,
                        "Repeating": repeat,
                      }
                  ).then((value)
@@ -76,7 +75,8 @@ class _ReminderDetailsPageState extends State<ReminderDetailsPage> {
                  });
 
                  print('Type: ${type}');
-                 print('Frequency: ${frequency}');
+                 print('Time: ${time}');
+                 print('Date: ${date}');
                  print('Repeating: ${repeat}');
                 },
                  child:
@@ -93,28 +93,39 @@ class _ReminderDetailsPageState extends State<ReminderDetailsPage> {
         onChanged: (value) => setState(() => this.type = value),
         decoration: InputDecoration(
           labelText: 'Type of Reminder',
-          hintText: 'ex: Medication or Appointment',
+          hintText: 'Appointment or Medicine',
           border: OutlineInputBorder(),
         ),
       );
 
-  Widget getFrequency() =>
+  Widget getDate() =>
       TextField(
-        onChanged: (value) => setState(() => this.frequency = value),
+        onChanged: (value) => setState(() => this.date = value),
         decoration: InputDecoration(
-          labelText: 'Frequency',
-          hintText: 'Every when do you want a reminder?',
+          labelText: 'Date',
+          hintText: 'ex: 10/02/21',
           border: OutlineInputBorder(),
         ),
       );
+
+  Widget getTime() =>
+      TextField(
+        onChanged: (value) => setState(() => this.time = value),
+        decoration: InputDecoration(
+          labelText: 'Time of Reminder',
+          hintText: 'ex: 10:05 AM',
+          border: OutlineInputBorder(),
+        ),
+    );
 
   Widget getRepeatiting() =>
       TextField(
         onChanged: (value) => setState(() => this.repeat = value),
         decoration: InputDecoration(
           labelText: 'Reapeating?',
-          hintText: 'One time occurance or not (yes/no)',
+          hintText: 'No, Daily, Weekly, or Monthly',
           border: OutlineInputBorder(),
         ),
       );
+
 }

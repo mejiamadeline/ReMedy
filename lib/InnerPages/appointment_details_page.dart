@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:remedy/Pages/appointment_page.dart';
@@ -16,9 +17,10 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
   String date = '';
   String actualTime = '';
   String location = '';
-  String reminderTime = '';
   String physician = '';
-  TimeOfDay time = TimeOfDay(hour: 9, minute: 25);
+  final DatabaseReference ref =
+  FirebaseDatabase.instance.reference().child("users");
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +28,6 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
         appBar: AppBar(
           title: Text('Appointments'),
           centerTitle: true,
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(primary: Colors.redAccent),
-              onPressed: () {},
-              child: const Text('Save'),
-            ),
-          ],
         ),
         body: Center(
           child: ListView(
@@ -47,14 +42,14 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
               getPhysician(),
               const SizedBox(height: 30,),
               getActualTime(),
-              const SizedBox(height: 30,),
-              getReminderTime(),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   primary: Colors.green,
                   backgroundColor: Colors.black,
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  final FirebaseUser user = await auth.currentUser();
+                  final uid = user.uid;
                   Navigator.pop(
                       context,
                       MaterialPageRoute(
@@ -63,13 +58,13 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
                       ));
                   var timestamp = new DateTime.now().millisecondsSinceEpoch;
                   FirebaseDatabase.instance.reference().child(
-                      "Appointment/app" + timestamp.toString()).set(
+                      "users/$uid/Appointment/app"
+                          + timestamp.toString()).set(
                       {
                         "Nickname": nickname,
                         "Date": date,
                         "Location": location,
                         "Actual Time": actualTime,
-                        "Reminder Time": reminderTime,
                         "Physician": physician,
                       }
                   ).then((value) {
@@ -81,7 +76,6 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
                   print('Date: ${date}');
                   print('Location: ${location}');
                   print('Actual Time: ${actualTime}');
-                  print('Reminder Time: ${reminderTime}');
                   print('Physician: ${physician}');
                 },
 
@@ -125,15 +119,6 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
 
   Widget getActualTime() =>
       TextField(
-        /*onTap: () async
-        {
-          var selectedTime = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-          );
-                actualTime = selectedTime!.format(context);
-        },
-        readOnly: true,*/
         onChanged: (value) => setState(() => this.actualTime = value),
         decoration: InputDecoration(
           labelText: 'Time of Appointment',
@@ -142,16 +127,6 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
         ),
       );
 
-  Widget getReminderTime() =>
-      TextField(
-        onChanged: (value) => setState(() => this.reminderTime = value),
-        decoration: InputDecoration(
-          labelText: 'Reminder Time',
-          hintText: 'What time would you like the reminder?',
-          border: OutlineInputBorder(),
-        ),
-        keyboardType: TextInputType.number,
-      );
 
   Widget getPhysician() =>
       TextField(
